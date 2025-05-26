@@ -3,7 +3,8 @@
     "description": "Greenpeace Planet 4",
     "license": "MIT",
     "require": {
-        "greenpeace/planet4-master-theme" : "dev-main"
+        "greenpeace/planet4-master-theme": "dev-main",
+        "wpackagist-plugin/all-in-one-intranet": "1.*"
     },
     "scripts": {
         "site:custom" : []
