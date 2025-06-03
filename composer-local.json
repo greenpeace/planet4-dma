@@ -4,8 +4,7 @@
     "license": "MIT",
     "require": {
         "greenpeace/planet4-master-theme" : "dev-main",
-        "wpackagist-plugin/all-in-one-intranet": "1.*",
-        "wpackagist-plugin/prevent-direct-access": "2.*"
+        "wpackagist-plugin/all-in-one-intranet": "1.*"
     },
     "scripts": {
         "site:custom" : []
