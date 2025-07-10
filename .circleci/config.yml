@@ -22,8 +22,6 @@ defaults: &defaults
 
 orbs:
   slack: circleci/slack@3.4.2
-
-
 job_environments:
   common_environment: &common_environment
     APP_HOSTPATH: dma
@@ -62,6 +60,7 @@ job_environments:
     MIN_REPLICA_COUNT: 2
     WP_DB_NAME: planet4-dma_wordpress_master
     WP_STATELESS_BUCKET: planet4-dma-stateless
+
 
 commands:
   approve_job:
@@ -432,6 +431,19 @@ jobs:
       - run: ls
       - run: ./go.sh
 
+  elasticpress:
+    <<: *defaults
+    environment:
+      <<: *common_environment
+      <<: *production_environment
+    steps:
+      - run:
+          name: Configure
+          command: activate-gcloud-account.sh
+      - run:
+          name: Sync ElasticPress
+          command: elasticpress-sync.sh
+
 workflow_definitions:
   on_develop_commit: &on_develop_commit
     context: org-global
@@ -559,4 +571,16 @@ workflows:
                 - main
     jobs:
       - backup:
+          context: org-global
+
+  elasticpress:
+    triggers:
+      - schedule:
+          cron: "30 04 * * *"
+          filters:
+            branches:
+              only:
+                - main
+    jobs:
+      - elasticpress:
           context: org-global
