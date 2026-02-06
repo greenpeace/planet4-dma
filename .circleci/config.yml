@@ -214,7 +214,10 @@ job_definitions:
 
 jobs:
   build-develop:
-    <<: *defaults
+    docker:
+      - image: greenpeaceinternational/p4-builder:php8.3
+        auth:
+          <<: *docker_auth
     environment:
       <<: *common_environment
       <<: *develop_environment
@@ -431,19 +434,6 @@ jobs:
       - run: ls
       - run: ./go.sh
 
-  elasticpress:
-    <<: *defaults
-    environment:
-      <<: *common_environment
-      <<: *production_environment
-    steps:
-      - run:
-          name: Configure
-          command: activate-gcloud-account.sh
-      - run:
-          name: Sync ElasticPress
-          command: elasticpress-sync.sh
-
 workflow_definitions:
   on_develop_commit: &on_develop_commit
     context: org-global
@@ -571,16 +561,4 @@ workflows:
                 - main
     jobs:
       - backup:
-          context: org-global
-
-  elasticpress:
-    triggers:
-      - schedule:
-          cron: "30 04 * * *"
-          filters:
-            branches:
-              only:
-                - main
-    jobs:
-      - elasticpress:
           context: org-global
